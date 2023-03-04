@@ -10,12 +10,10 @@ const authenticateJwt = (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
     } else if (req.headers.authorization) {
       token = req.get("Authorization");
-    }
-    if (!token) {
-      console.log("Not looged in");
-    } else if (req.cookies.jwt) {
+    } else {
       token = req.cookies.jwt;
     }
+
     if (!token) {
       return next(
         new AppError("Invalid credential. Please log in again!", 401)
