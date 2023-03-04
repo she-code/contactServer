@@ -1,5 +1,5 @@
 /* The bellow code is a middleware function that is used to authenticate the user. */
-const jwt = require("jsonwebtoken");
+const jsonwebtoken = require("jsonwebtoken");
 const AppError = require("../utils/AppError");
 
 const authenticateJwt = (req, res, next) => {
@@ -15,7 +15,7 @@ const authenticateJwt = (req, res, next) => {
   if (!token) {
     return next(new AppError("Invalid credential. Please log in again!", 401));
   }
-  jwt.verify(token, process.env.JWT_SECRET, (err, verifiedJwt) => {
+  jsonwebtoken.verify(token, process.env.JWT_SECRET, (err, verifiedJwt) => {
     if (err) {
       return next(
         new AppError("Your token has expired! Please log in again.", 401)
