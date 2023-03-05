@@ -51,3 +51,27 @@ exports.login = async (req, res, next) => {
     });
   }
 };
+
+exports.me = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+
+    const user = await User.findOne({
+      _id: currentUser,
+    });
+    if (user) {
+      res.status(200).json({
+        status: "success",
+        user,
+      });
+    } else {
+      return next(new AppError("User not found", 404));
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      status: "fail",
+      error: { message: error.message },
+    });
+  }
+};
