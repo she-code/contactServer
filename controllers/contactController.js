@@ -1,8 +1,13 @@
 const Contact = require("../models/contactModel");
+const AppError = require("../utils/AppError");
 exports.createContact = async (req, res, next) => {
   try {
-    const { firstName, phoneNo, lastName, email, groups } = req.body;
+    const { firstName, phoneNo, lastName, email, groups, note } = req.body;
     const contactOwner = req.user;
+    const existsingContact = await Contact.findOne({ phoneNo, contactOwner });
+    if (existsingContact) {
+      return next(new AppError("Contact already exists", 400));
+    }
     const contact = await Contact.create({
       firstName,
       lastName,
@@ -10,6 +15,7 @@ exports.createContact = async (req, res, next) => {
       email,
       groups,
       contactOwner,
+      note,
     });
     if (contact) {
       res.status(200).json({

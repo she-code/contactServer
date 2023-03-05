@@ -10,7 +10,6 @@ const contactSchema = new Schema(
     lastName: String,
     phoneNo: {
       type: Number,
-      unique: true,
       required: [true, "Phone number is required"],
     },
     email: {
@@ -27,6 +26,9 @@ const contactSchema = new Schema(
       type: mongoose.Schema.ObjectId,
       ref: "User",
       required: [true, "A contact must belong to a user"],
+    },
+    note: {
+      type: String,
     },
   },
   {
